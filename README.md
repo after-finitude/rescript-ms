@@ -36,7 +36,7 @@ Ms.parse('-3 days'); // -259200000
 Ms.parse('-1h'); // -3600000
 Ms.parse('-200'); // -200
 
-Ms.format(60000); // "1m"
-Ms.format(2 * 60000); // "2m"
-Ms.format(-3 * 60000); // "-3m"
+Ms.format(60000.0); // "1m"
+Ms.format(2.0 *. 60000.0); // "2m"
+Ms.format(-3.0 *. 60000.0); // "-3m"
 ```
