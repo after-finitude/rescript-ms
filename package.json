@@ -1,6 +1,6 @@
 {
   "name": "rescript-ms",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Reimplementation of ms in ReScript",
   "main": "src/Ms.res",
   "author": "Alexander Zenov <alexander.zenov@gmail.com>",
