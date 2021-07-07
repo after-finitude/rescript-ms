@@ -11,25 +11,33 @@ let parse = str => {
   )
 
   let match = switch rgx->Js.Re.exec_(str) {
-  | Some(v) => v->Js.Re.captures
-  | None => []
+  | Some(v) => v->Js.Re.captures->Belt.List.fromArray
+  | None => list{}
   }
 
-  let n = switch match[1]->Js.Nullable.toOption {
+  let n = switch match->Belt.List.get(1) {
   | Some(v) =>
-    switch v->Belt.Float.fromString {
-    | Some(v) => v
+    switch v->Js.Nullable.toOption {
+    | Some(v) =>
+      switch v->Belt.Float.fromString {
+      | Some(v) => v
+      | None => 0.0
+      }
     | None => 0.0
     }
   | None => 0.0
   }
 
-  let t = switch match[2]->Js.Nullable.toOption {
-  | Some(v) => v->Js.String2.toLowerCase
-  | None => "ms"
+  let t = switch match->Belt.List.get(2) {
+  | Some(v) =>
+    switch v->Js.Nullable.toOption {
+    | Some(v) => v->Js.String2.toLowerCase
+    | None => "ms"
+    }
+  | None => ""
   }
 
-  switch t {
+  let result = switch t {
   | "years" | "year" | "yrs" | "yr" | "y" => n *. year
   | "weeks" | "week" | "w" => n *. week
   | "days" | "day" | "d" => n *. day
@@ -39,6 +47,12 @@ let parse = str => {
   | "milliseconds" | "millisecond" | "msecs" | "msec" | "ms" => n
   | _ => 0.0
   }
+
+  if result === 0.0 {
+    Js.Exn.raiseError("Invalid value")
+  }
+
+  result
 }
 
 let format = ms => {
