@@ -58,15 +58,18 @@ let parse = str => {
 let format = ms => {
   let msAbs = ms->Js.Math.abs_float
 
+  let calculate = (timeUnit, prefix) =>
+    (ms /. timeUnit)->Js.Math.round->Belt.Float.toString->Js.String2.concat(prefix)
+
   if msAbs >= day {
-    (ms /. day)->Js.Math.round->Belt.Float.toString->Js.String2.concat("d")
+    calculate(day, "d")
   } else if msAbs >= hour {
-    (ms /. hour)->Js.Math.round->Belt.Float.toString->Js.String2.concat("h")
+    calculate(hour, "h")
   } else if msAbs >= min {
-    (ms /. min)->Js.Math.round->Belt.Float.toString->Js.String2.concat("m")
+    calculate(min, "m")
   } else if msAbs >= sec {
-    (ms /. sec)->Js.Math.round->Belt.Float.toString->Js.String2.concat("s")
+    calculate(sec, "s")
   } else {
-    ms->Belt.Float.toString->Js.String2.concat("ms")
+    calculate(1.0, "ms")
   }
 }
